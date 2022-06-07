@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuOpaTrading", "NuOpaTrading\NuOpaTrading.csproj", "{52B55E93-B91B-49CB-95B9-54F2C7472D25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NuOpaTrading", "NuOpaTrading\NuOpaTrading.csproj", "{52B55E93-B91B-49CB-95B9-54F2C7472D25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuOpaTrading.DataAccess", "NuOpaTrading.DataAccess\NuOpaTrading.DataAccess.csproj", "{99C26B13-5E5D-4379-8FAD-267DDF04CF04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuOpaTrading.Utilities", "NuOpaTrading.Utilities\NuOpaTrading.Utilities.csproj", "{F2B1D8E1-B76C-4B8D-A75D-962C6675350E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuOpaTrading.Models", "NuOpaTrading.Models\NuOpaTrading.Models.csproj", "{DC70A6DE-F3A3-43AF-B976-90B8E84AD279}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{52B55E93-B91B-49CB-95B9-54F2C7472D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52B55E93-B91B-49CB-95B9-54F2C7472D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52B55E93-B91B-49CB-95B9-54F2C7472D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C26B13-5E5D-4379-8FAD-267DDF04CF04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C26B13-5E5D-4379-8FAD-267DDF04CF04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C26B13-5E5D-4379-8FAD-267DDF04CF04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C26B13-5E5D-4379-8FAD-267DDF04CF04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2B1D8E1-B76C-4B8D-A75D-962C6675350E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B1D8E1-B76C-4B8D-A75D-962C6675350E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B1D8E1-B76C-4B8D-A75D-962C6675350E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B1D8E1-B76C-4B8D-A75D-962C6675350E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC70A6DE-F3A3-43AF-B976-90B8E84AD279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC70A6DE-F3A3-43AF-B976-90B8E84AD279}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC70A6DE-F3A3-43AF-B976-90B8E84AD279}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC70A6DE-F3A3-43AF-B976-90B8E84AD279}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

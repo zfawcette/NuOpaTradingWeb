@@ -15,4 +15,8 @@
     <Folder Include="Areas\Admin\Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NuOpaTrading.Models\NuOpaTrading.Models.csproj" />
+  </ItemGroup>
+
 </Project>
