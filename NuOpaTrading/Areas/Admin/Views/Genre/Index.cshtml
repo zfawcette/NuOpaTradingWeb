@@ -2,23 +2,41 @@
 @{
     ViewData["Title"] = "Genre Management";
 }
-<h1>Genre Manager</h1>
-<table>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Genre Management</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Genre" asp-action="Upsert" class="btn btn-primary">Add New Genre</a>
+        </div>
+    </div>
+</div>
+<br/><br/>
+
+<table class="table table-bordered table-striped" style="width:100%">
     <thead>
         <tr>
-            <td>Name</td>
-            <td><a class="btn btn-primary" asp-area="Admin" asp-controller="Genre" asp-action="Upsert">Add New Genre</a></td>
+            <th>
+                Genre Name
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var genre in Model)
+        @foreach(var obj in Model)
         {
             <tr>
-                <td>@genre.Name</td>
+                <td width="50%">
+                    @obj.Name
+                </td>
                 <td>
-                    <div>
-                        <a class="btn btn-primary" asp-area="Admin" asp-controller="Genre" asp-action="Upsert" asp-route-id="@genre.Id">Edit</a>
-                        <a class="btn btn-danger" asp-area="Admin" asp-controller="Genre" asp-action="Remove">Delete</a>
+                    <div class="w-75 btn-group" role="group">
+                        <a asp-controller="Genre" asp-action="Upsert" asp-route-id="@obj.Id"
+                        class="btn btn-primary mx-2">Edit</a>
+                        <a asp-controller="Genre" asp-action="Delete" asp-route-id="@obj.Id"
+                        class="btn btn-danger mx-2">Delete</a>
                     </div>
                 </td>
             </tr>
