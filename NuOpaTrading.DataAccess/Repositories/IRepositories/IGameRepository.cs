@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NuOpaTrading.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace NuOpaTrading.DataAccess.Repositories.IRepositories
 {
-    public interface IUnitOfWork
+    public interface IGameRepository : IRepository<Game>
     {
-        IGenreRepository Genre { get; }
-        IGameRepository Game { get; }
-        void Save();
+        void Update(Game obj);
     }
 }

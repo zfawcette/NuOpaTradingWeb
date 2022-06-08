@@ -15,5 +15,6 @@ namespace NuOpaTrading.DataAccess.Data
         }
 
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Game> Games { get; set; }
     }
 }

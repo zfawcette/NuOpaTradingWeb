@@ -14,14 +14,14 @@ namespace NuOpaTrading.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Genre> genreList = _unitOfWork.GenreRepository.GetAll();
+            IEnumerable<Genre> genreList = _unitOfWork.Genre.GetAll();
             return View(genreList);
         }
 
         //GET
         public IActionResult Upsert(int? id)
         {
-            var genre = _unitOfWork.GenreRepository.GetFirstOrDefault(u => u.Id == id);
+            var genre = _unitOfWork.Genre.GetFirstOrDefault(u => u.Id == id);
             if (genre == null)
             {
                 return View(new Genre());
@@ -41,11 +41,11 @@ namespace NuOpaTrading.Areas.Admin.Controllers
             {
                 if (obj.Id == null || obj.Id == 0)
                 {
-                    _unitOfWork.GenreRepository.Add(obj);
+                    _unitOfWork.Genre.Add(obj);
                 }
                 else
                 {
-                    _unitOfWork.GenreRepository.Update(obj);
+                    _unitOfWork.Genre.Update(obj);
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
@@ -59,7 +59,7 @@ namespace NuOpaTrading.Areas.Admin.Controllers
         //GET
         public IActionResult Delete(int id)
         {
-            var obj = _unitOfWork.GenreRepository.GetFirstOrDefault(u => u.Id == id);
+            var obj = _unitOfWork.Genre.GetFirstOrDefault(u => u.Id == id);
             return View(obj);
         }
 
@@ -69,7 +69,7 @@ namespace NuOpaTrading.Areas.Admin.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(Genre obj)
         {
-            _unitOfWork.GenreRepository.Remove(obj);
+            _unitOfWork.Genre.Remove(obj);
             _unitOfWork.Save();
             return RedirectToAction("Index");
         }

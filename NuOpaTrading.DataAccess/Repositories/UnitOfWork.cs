@@ -15,9 +15,11 @@ namespace NuOpaTrading.DataAccess.Repositories
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            GenreRepository = new GenreRepository(_db);
+            Genre = new GenreRepository(_db);
+            Game = new GameRepository(_db);
         }
-        public IGenreRepository GenreRepository { get; private set; }
+        public IGenreRepository Genre { get; private set; }
+        public IGameRepository Game { get; private set; }
         public void Save()
         {
             _db.SaveChanges();
