@@ -1,5 +1,27 @@
-﻿@{
+﻿@model IEnumerable<Game>
+@{
     ViewData["Title"] = "Games";
 }
-<h1>My Game List</h1>
+<div class="row pb-3">
+    @foreach (var game in Model)
+    {
+        <div class="col-lg-3 col-md-6">
+            <div class="row p-2">
+                <div class="col-12 p-1" style="border:1px solid #008cba; border-radius: 5px;">
+                    <div class="card">
+                        <img src="@game.ImageUrl" class="card-img-top rounded" />
+                        <div class="card-body">
+                            <div class="pl-1">
+                                <p class="card-title h5 text-primary">@game.Title</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="align-content-center">
+                        <a class="btn btn-danger form-control" asp-area="Customer" asp-controller="Game" asp-action="Delete" asp-route-id="@game.Id">Remove</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
