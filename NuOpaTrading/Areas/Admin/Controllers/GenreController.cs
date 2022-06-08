@@ -22,7 +22,7 @@ namespace NuOpaTrading.Areas.Admin.Controllers
         public IActionResult Upsert(int? id)
         {
             var genre = _unitOfWork.GenreRepository.GetFirstOrDefault(u => u.Id == id);
-            if(genre == null)
+            if (genre == null)
             {
                 return View(new Genre());
             }
@@ -39,7 +39,7 @@ namespace NuOpaTrading.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(obj.Id == null || obj.Id == 0)
+                if (obj.Id == null || obj.Id == 0)
                 {
                     _unitOfWork.GenreRepository.Add(obj);
                 }
@@ -54,6 +54,24 @@ namespace NuOpaTrading.Areas.Admin.Controllers
             {
                 return View(obj);
             }
+        }
+
+        //GET
+        public IActionResult Delete(int id)
+        {
+            var obj = _unitOfWork.GenreRepository.GetFirstOrDefault(u => u.Id == id);
+            return View(obj);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public IActionResult DeletePost(Genre obj)
+        {
+            _unitOfWork.GenreRepository.Remove(obj);
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
         }
     }
 }

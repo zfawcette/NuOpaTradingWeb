@@ -1,0 +1,24 @@
+﻿@model NuOpaTrading.Models.Genre
+
+<form method="post" asp-action="Delete" enctype="multipart/form-data">
+    
+    <div class="row">
+        <div class="col-10">
+            <div class="border p-3 mt-4 row">
+        <div class="col-12 pb-2">
+            <h2 class="text-primary">Delete Genre</h2>
+            <hr />
+        </div>
+        <input hidden asp-for="Id" />
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" disabled />
+        </div>
+        <div class="mb-3">
+            <button type="submit" asp-controller="Genre" asp-action="Delete" class="btn btn-primary" style="width:150px">Delete</button>   
+            <a asp-controller="Genre" asp-action="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+        </div>
+    </div>
+        </div>
+    </div>
+</form>
