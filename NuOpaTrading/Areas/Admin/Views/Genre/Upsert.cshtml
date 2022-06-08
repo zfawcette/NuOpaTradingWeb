@@ -1,0 +1,13 @@
+﻿@model NuOpaTrading.Models.Genre
+
+<form method="post">
+    <input asp-for="Id" hidden/>
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" value="@Model.Name" />
+    </div>
+    <div>
+        <button type="submit" asp-action="Upsert">@(Model.Id==0 ? "Add" : "Updated") Genre</button>
+        <a class="btn btn-secondary" asp-area="Admin" asp-controller="Genre" asp-action="Index">Back To List</a>
+    </div>
+</form>

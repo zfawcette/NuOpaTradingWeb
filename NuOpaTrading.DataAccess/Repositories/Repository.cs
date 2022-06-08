@@ -41,7 +41,7 @@ namespace NuOpaTrading.DataAccess.Repositories
 
         public void Remove(T entity)
         {
-            dbSet.Remove(entity)
+            dbSet.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<T> entities)
