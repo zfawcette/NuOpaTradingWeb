@@ -4,6 +4,7 @@ using NuOpaTrading.Models;
 
 namespace NuOpaTrading.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class GenreController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

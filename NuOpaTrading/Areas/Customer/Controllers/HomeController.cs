@@ -7,6 +7,7 @@ using NuOpaTrading.Utilities;
 
 namespace NuOpaTrading.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

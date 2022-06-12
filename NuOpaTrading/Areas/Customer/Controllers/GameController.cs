@@ -6,6 +6,7 @@ using NuOpaTrading.Utilities;
 
 namespace NuOpaTrading.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class GameController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
