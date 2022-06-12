@@ -30,6 +30,9 @@ namespace NuOpaTrading.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<long?>("GameId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Genres")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

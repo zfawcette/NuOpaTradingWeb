@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NuOpaTrading.Models;
 using System.Diagnostics;
+using IGDB;
+using IGDB.Models;
 
 namespace NuOpaTrading.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        IGDBClient igdb = new IGDBClient("********","************");
 
         public HomeController(ILogger<HomeController> logger)
         {

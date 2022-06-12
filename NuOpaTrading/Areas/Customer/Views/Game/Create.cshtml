@@ -1,0 +1,41 @@
+﻿@model IEnumerable<NuOpaTrading.Models.Game>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Add Game</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-secondary" asp-action="Index" asp-controller="Game">Back To List</a>
+        </div>
+    </div>
+</div>
+<br/><br/>
+<form method="post">
+<table class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td width="25%"><img src="@obj.ImageUrl" /></td>
+                <td width="50%">
+                    @obj.Title
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" asp-controller="Game" asp-action="Create" asp-route-gameId="@obj.GameId">Add To List</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</form>
+

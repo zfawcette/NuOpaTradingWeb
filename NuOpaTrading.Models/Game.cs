@@ -13,6 +13,7 @@ namespace NuOpaTrading.Models
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
+        public long? GameId { get; set; }
         public string ImageUrl { get; set; }
         public string Genres { get; set; }
     }
