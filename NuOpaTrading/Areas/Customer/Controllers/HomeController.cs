@@ -3,13 +3,14 @@ using NuOpaTrading.Models;
 using System.Diagnostics;
 using IGDB;
 using IGDB.Models;
+using NuOpaTrading.Utilities;
 
 namespace NuOpaTrading.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        IGDBClient igdb = new IGDBClient("********","************");
+        IGDBClient igdb = new IGDBClient(SecretInfo.IGDB_PK,SecretInfo.IGDB_SK);
 
         public HomeController(ILogger<HomeController> logger)
         {

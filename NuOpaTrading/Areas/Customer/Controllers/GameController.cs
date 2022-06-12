@@ -2,13 +2,14 @@
 using IGDB.Models;
 using Microsoft.AspNetCore.Mvc;
 using NuOpaTrading.DataAccess.Repositories.IRepositories;
+using NuOpaTrading.Utilities;
 
 namespace NuOpaTrading.Areas.Customer.Controllers
 {
     public class GameController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        IGDBClient igdb = new IGDBClient("*********", "************");
+        IGDBClient igdb = new IGDBClient(SecretInfo.IGDB_PK, SecretInfo.IGDB_SK);
         public GameController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

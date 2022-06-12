@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NuOpaTrading.DataAccess\NuOpaTrading.DataAccess.csproj" />
     <ProjectReference Include="..\NuOpaTrading.Models\NuOpaTrading.Models.csproj" />
+    <ProjectReference Include="..\NuOpaTrading.Utilities\NuOpaTrading.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

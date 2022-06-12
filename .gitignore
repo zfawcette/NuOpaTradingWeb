@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+/NuOpaTrading.Utilities/SecretInfo.cs
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
