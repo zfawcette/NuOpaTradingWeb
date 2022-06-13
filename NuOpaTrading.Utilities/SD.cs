@@ -8,6 +8,7 @@ namespace NuOpaTrading.Utilities
 {
     public static class SD
     {
-
+        public const string User_Role_Admin = "Admin";
+        public const string User_Role_Customer = "Customer";
     }
 }
