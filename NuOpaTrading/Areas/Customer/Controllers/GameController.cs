@@ -100,7 +100,7 @@ namespace NuOpaTrading.Areas.Customer.Controllers
             {
                 return View();
             }
-            var games = igdb.QueryAsync<IGDB.Models.Game>(IGDBClient.Endpoints.Games, query: $"fields id,name,genres,cover.image_id;limit 25;search \"{obj.Query}\";").GetAwaiter().GetResult();
+            var games = igdb.QueryAsync<IGDB.Models.Game>(IGDBClient.Endpoints.Games, query: $"fields id,name,genres,cover.image_id;limit 100;search \"{obj.Query}\";").GetAwaiter().GetResult();
             List<Models.Game> GameList = GetGames(games);
             return View("Create", GameList);
         }
