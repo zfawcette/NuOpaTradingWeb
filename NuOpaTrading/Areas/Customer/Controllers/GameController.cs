@@ -2,7 +2,9 @@
 using IGDB.Models;
 using Microsoft.AspNetCore.Mvc;
 using NuOpaTrading.DataAccess.Repositories.IRepositories;
+using NuOpaTrading.Models;
 using NuOpaTrading.Utilities;
+using System.Security.Claims;
 
 namespace NuOpaTrading.Areas.Customer.Controllers
 {
@@ -17,36 +19,17 @@ namespace NuOpaTrading.Areas.Customer.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Models.Game> games = _unitOfWork.Game.GetAll();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            IEnumerable<WishList> gameList = _unitOfWork.WishList.GetAll(u=>u.UserID == claim.Value);
+            List<Models.Game> games = new List<Models.Game>();
+            foreach (var game in gameList)
+            {
+                var newGame = _unitOfWork.Game.GetFirstOrDefault(u => u.Id == game.GameID);
+                games.Add(newGame);
+            }
             return View(games);
-        }
 
-        public IActionResult Create()
-        {
-                //Create view that takes in the queried result as its parameter
-                Task<Game[]>? games = igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: "fields id,name,genres; limit 25;");
-                List<Models.Game> GameList = new List<Models.Game>();
-                string genres = "";
-                
-                foreach (var game in games.Result)
-                {
-                    if(game.Genres != null)
-                    {
-                        foreach (var g in game.Genres.Ids)
-                        {
-                            genres = genres + g + ",";
-                        }
-                    }
-                    Models.Game gameModel = new()
-                    {
-                        Title = game.Name,
-                        GameId = game.Id,
-                        ImageUrl = "",
-                        Genres = genres
-                    };
-                    GameList.Add(gameModel);
-                }
-                return View(GameList);
         }
 
         [HttpPost]
@@ -55,26 +38,53 @@ namespace NuOpaTrading.Areas.Customer.Controllers
         {
             if(gameId != null)
             {
-                var game = igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: "fields id,name,genres,cover.image_id; where id = " + gameId + ";");
-                string genres = "";
-                if (game.Result.First().Genres != null)
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+                var game = igdb.QueryAsync<IGDB.Models.Game>(IGDBClient.Endpoints.Games, query: "fields id,name,genres,cover.image_id; where id = " + gameId + ";").GetAwaiter().GetResult().FirstOrDefault();
+
+                //Check if Game is in Game Table if so send a reference to that game, if not add it to the table
+                var check = _unitOfWork.Game.GetFirstOrDefault(u => u.GameId == game.Id);
+                Models.Game gameToAdd;
+                if(check == null)
                 {
-                    foreach (var g in game.Result.First().Genres.Ids)
+                    string genres = "";
+                    if (game.Genres != null)
                     {
-                        genres = genres + g + ",";
+                        foreach (var g in game.Genres.Ids)
+                        {
+                            genres = genres + g + ",";
+                        }
                     }
+                    var coverSmall = "";
+                    if (game.Cover != null)
+                    {
+                        var artworkImageId = game.Cover.Value.ImageId;
+                        coverSmall = IGDB.ImageHelper.GetImageUrl(imageId: artworkImageId, size: ImageSize.CoverSmall, retina: false);
+                    }
+                    else
+                    {
+                        coverSmall = "https://via.placeholder.com/100x150";
+                    }
+                    gameToAdd = new()
+                    {
+                        Title = game.Name,
+                        GameId = game.Id,
+                        ImageUrl = coverSmall,
+                        Genres = genres
+                    };
+                    _unitOfWork.Game.Add(gameToAdd);
+                    _unitOfWork.Save();
                 }
-                var artworkImageId = game.Result.First().Cover.Value.ImageId;
-                var coverSmall = IGDB.ImageHelper.GetImageUrl(imageId: artworkImageId, size: ImageSize.CoverSmall, retina: false);
-                Models.Game newGame = new() { Title = game.Result.First().Name, GameId = game.Result.First().Id, ImageUrl = coverSmall, Genres = genres };
-                _unitOfWork.Game.Add(newGame);
+                else
+                {
+                    gameToAdd = check;
+                }
+                WishList newWishlistItem = new() { GameID = gameToAdd.Id, UserID = claim.Value };
+                _unitOfWork.WishList.Add(newWishlistItem);
                 _unitOfWork.Save();
-                return RedirectToAction("Index");
             }
-            else
-            {
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult Search()
@@ -84,15 +94,21 @@ namespace NuOpaTrading.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Search(NuOpaTrading.Models.Search obj)
+        public IActionResult Search(Models.Search obj)
         {
             if(obj.Query == null)
             {
                 return View();
             }
-            var games = igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: $"fields id,name,genres,cover.image_id;limit 25;search \"{obj.Query}\";");
+            var games = igdb.QueryAsync<IGDB.Models.Game>(IGDBClient.Endpoints.Games, query: $"fields id,name,genres,cover.image_id;limit 25;search \"{obj.Query}\";").GetAwaiter().GetResult();
+            List<Models.Game> GameList = GetGames(games);
+            return View("Create", GameList);
+        }
+
+        private List<Models.Game> GetGames(IEnumerable<IGDB.Models.Game>? games)
+        {
             List<Models.Game> GameList = new List<Models.Game>();
-            foreach (var game in games.Result)
+            foreach (var game in games)
             {
                 string genres = "";
                 if (game.Genres != null)
@@ -102,8 +118,16 @@ namespace NuOpaTrading.Areas.Customer.Controllers
                         genres = genres + g + ",";
                     }
                 }
-                var artworkImageId = game.Cover.Value.ImageId;
-                var coverSmall = IGDB.ImageHelper.GetImageUrl(imageId: artworkImageId, size: ImageSize.CoverSmall, retina: false);
+                var coverSmall = "";
+                if (game.Cover != null)
+                {
+                    var artworkImageId = game.Cover.Value.ImageId;
+                    coverSmall = IGDB.ImageHelper.GetImageUrl(imageId: artworkImageId, size: ImageSize.CoverSmall, retina: false);
+                }
+                else
+                {
+                    coverSmall = "https://via.placeholder.com/100x150";
+                }
                 Models.Game gameModel = new()
                 {
                     Title = game.Name,
@@ -113,7 +137,7 @@ namespace NuOpaTrading.Areas.Customer.Controllers
                 };
                 GameList.Add(gameModel);
             }
-            return View("Create", GameList);
+            return GameList;
         }
         #region API CALLS
         [HttpDelete]
@@ -124,8 +148,15 @@ namespace NuOpaTrading.Areas.Customer.Controllers
             {
                 return Json(new {success = false, message = "Error Removing"});
             }
-
-            _unitOfWork.Game.Remove(game);
+            var check = _unitOfWork.WishList.GetAll(u => u.GameID == id);
+            if(check.Count() == 1)
+            {
+                _unitOfWork.Game.Remove(game);
+            }
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var listToRemove = _unitOfWork.WishList.GetAll(u => u.UserID == claim.Value).FirstOrDefault(u => u.GameID == id);
+            _unitOfWork.WishList.Remove(listToRemove);
             _unitOfWork.Save();
             return Json(new { success = true, message = "successful remove" });
         }

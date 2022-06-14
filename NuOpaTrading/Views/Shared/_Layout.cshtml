@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using NuOpaTrading.Utilities
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,38 +12,46 @@
 </head>
 <body>
     <header>
-        
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">NuOpa Trading</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" asp-area="Customer" asp-controller="Home" asp-action="Index">Home
-            <span class="visually-hidden">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" asp-area="Customer" asp-controller="Game" asp-action="Index">My Game List
-            <span class="visually-hidden">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Site Management</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" asp-area="Admin" asp-controller="Genre" asp-action="Index">Genre</a>
-          </div>
-        </li>
-      </ul>
-      <partial name="_LoginPartial" />
-    </div>
-  </div>
-</nav>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">NuOpa Trading</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                                Home
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        @if (User.IsInRole(SD.User_Role_Admin) || User.IsInRole(SD.User_Role_Customer))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link active" asp-area="Customer" asp-controller="Game" asp-action="Index">
+                                    My Game List
+                                    <span class="visually-hidden">(current)</span>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole(SD.User_Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Site Management</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Genre" asp-action="Index">Genre</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
 
 
     </header>

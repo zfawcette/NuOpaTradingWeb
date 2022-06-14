@@ -26,9 +26,14 @@ namespace NuOpaTrading.DataAccess.Repositories
             dbSet.Add(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter)
         {
             IQueryable<T> query = dbSet;
+            if(filter != null)
+            {
+                query = query.Where(filter);
+
+            }
             return query.ToList();
         }
 

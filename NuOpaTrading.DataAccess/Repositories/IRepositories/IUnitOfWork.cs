@@ -10,6 +10,7 @@ namespace NuOpaTrading.DataAccess.Repositories.IRepositories
     {
         IGenreRepository Genre { get; }
         IGameRepository Game { get; }
+        IWishListRepository WishList { get; }
         void Save();
     }
 }

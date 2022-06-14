@@ -17,9 +17,11 @@ namespace NuOpaTrading.DataAccess.Repositories
             _db = db;
             Genre = new GenreRepository(_db);
             Game = new GameRepository(_db);
+            WishList = new WishListRepository(_db);
         }
         public IGenreRepository Genre { get; private set; }
         public IGameRepository Game { get; private set; }
+        public IWishListRepository WishList { get; private set; }
         public void Save()
         {
             _db.SaveChanges();

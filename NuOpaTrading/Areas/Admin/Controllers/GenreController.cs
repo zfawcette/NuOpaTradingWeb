@@ -15,7 +15,7 @@ namespace NuOpaTrading.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Genre> genreList = _unitOfWork.Genre.GetAll();
+            IEnumerable<Genre> genreList = _unitOfWork.Genre.GetAll(null);
             return View(genreList);
         }
 
