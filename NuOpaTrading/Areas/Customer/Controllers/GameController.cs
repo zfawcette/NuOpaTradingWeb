@@ -105,6 +105,54 @@ namespace NuOpaTrading.Areas.Customer.Controllers
             return View("Create", GameList);
         }
 
+        public IActionResult Details(long? gameId)
+        {
+            var game = igdb.QueryAsync<IGDB.Models.Game>(IGDBClient.Endpoints.Games, query: "fields name,genres,cover.image_id,screenshots,summary,videos,game_modes,release_dates; where id = " + gameId + ";").GetAwaiter().GetResult().FirstOrDefault();
+
+            List<string> genres = new List<string>();
+            if (game.Genres != null)
+            {
+                foreach (var g in game.Genres.Ids)
+                {
+                    genres.Add(igdb.QueryAsync<IGDB.Models.Genre>(IGDBClient.Endpoints.Genres, query: "fields name; where id = " + g + ";").GetAwaiter().GetResult().FirstOrDefault().Name);
+                }
+            }
+
+            var cover = "";
+            if (game.Cover != null)
+            {
+                var artworkImageId = game.Cover.Value.ImageId;
+                cover = IGDB.ImageHelper.GetImageUrl(imageId: artworkImageId, size: ImageSize.CoverBig, retina: false);
+            }
+            else
+            {
+                cover = "https://via.placeholder.com/100x150";
+            }
+
+            List<string> screenshots = new List<string>();
+            foreach(var screenshot in game.Screenshots.Ids)
+            {
+                var screenshotUrl = igdb.QueryAsync<IGDB.Models.Screenshot>(IGDBClient.Endpoints.Screenshots, query: "fields url; where id = " + screenshot + ";").GetAwaiter().GetResult().FirstOrDefault().Url;
+                screenshots.Add(screenshotUrl);
+            }
+            var trailer = igdb.QueryAsync<IGDB.Models.GameVideo>(IGDBClient.Endpoints.GameVideos, query: "fields video_id; where id = " + game.Videos.Ids[0] + ";").GetAwaiter().GetResult().FirstOrDefault().VideoId;
+            List<string> playmodes = new List<string>();
+            foreach(var mode in game.GameModes.Ids)
+            {
+                playmodes.Add(igdb.QueryAsync<IGDB.Models.GameMode>(IGDBClient.Endpoints.GameModes, query: "fields name; where id = " + mode + ";").GetAwaiter().GetResult().FirstOrDefault().Name);
+            }
+            DetailsVM detailsVM = new DetailsVM();
+            detailsVM.Title = game.Name;
+            detailsVM.Description = game.Summary;
+            detailsVM.CoverUrl = cover;
+            detailsVM.TrailerURL = "https://www.youtube.com/embed/" + trailer;
+            detailsVM.Genres = genres;
+            detailsVM.ImageURLS = screenshots;
+            detailsVM.ReleaseDate = DateTime.Now.ToString();
+            detailsVM.PlayModes = playmodes;
+            return View(detailsVM);
+        }
+
         private List<Models.Game> GetGames(IEnumerable<IGDB.Models.Game>? games)
         {
             List<Models.Game> GameList = new List<Models.Game>();
